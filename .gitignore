@@ -12,4 +12,3 @@ Desktop.ini
 node_modules
 *.log
 *.gz
-process.env

@@ -1,20 +1,15 @@
 const express = require("express")
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 const exphbs = require("express-handlebars")
+const methodOverride = require("method-override")
 const bodyParser = require('body-parser')
 const restaurantsData = require("./restaurant.json").results
 const Restaurant = require("./models/Restaurant")
 
-const app = express()
-const port = 3000
-
-require('dotenv').config()
-
-const url = process.env.MONGO_URL
-mongoose.connect("mongodb://localhost/restaurant-list", { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => app.listen(PORT, () => console.log("Server up and running!")))
-  .catch((error) => console.log(error.message))
-mongoose.set('useFindAndModify', false)
+mongoose.connect("mongodb://localhost/restaurant-list", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
 
 const db = mongoose.connection
 
@@ -26,31 +21,16 @@ db.once("open", () => {
   console.log("mongodb connected!")
 })
 
+const app = express()
+const port = 3000
+
+// handlebars => hbs
+
 app.engine("hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }))
 app.set("view engine", "hbs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
-
-app.get("/", (req, res) => {
-  res.render("index", { restaurantsData })
-})
-
-app.get("/search", (req, res) => {
-  if (!req.query.keywords) {
-    return res.redirect("/")
-  }
-
-  const keywords = req.query.keywords
-  const keyword = req.query.keywords.trim().toLowerCase()
-
-  const filterRestaurantsData = restaurantsData.filter(
-    data =>
-      data.name.toLowerCase().includes(keyword) ||
-      data.category.includes(keyword)
-  )
-
-  res.render("index", { restaurantsData: filterRestaurantsData, keywords })
-})
+app.use(methodOverride("_method"))
 
 // 瀏覽全部餐廳
 app.get("/", (req, res) => {
@@ -129,6 +109,7 @@ app.delete("/restaurants/:restaurantId", (req, res) => {
     .catch(err => console.log(err))
 })
 
+// localhost
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`)
 })
