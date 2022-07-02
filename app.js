@@ -1,9 +1,26 @@
 const express = require("express")
+const mongoose = require('mongoose')
 const exphbs = require("express-handlebars")
 const restaurantsData = require("./restaurant.json").results
 
 const app = express()
 const port = 3000
+
+require('dotenv').config()
+
+const url = process.env.MONGO_URL
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => app.listen(PORT, () => console.log("Server up and running!")))
+    .catch((error) => console.log(error.message)) 
+mongoose.set('useFindAndModify', false)
+
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }))
 app.set("view engine", "handlebars")

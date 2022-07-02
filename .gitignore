@@ -1,5 +1,15 @@
-# Node.js
-/node_modules
+# OS X
+.DS_Store*
+Icon?
+._*
 
-# MacOS
-.DS_Store
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# npm
+node_modules
+*.log
+*.gz
+process.env
