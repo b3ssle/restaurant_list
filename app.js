@@ -29,7 +29,6 @@ db.once("open", () => {
 app.engine("hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }))
 app.set("view engine", "hbs")
 app.use(express.static("public"))
-
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get("/", (req, res) => {
@@ -53,6 +52,36 @@ app.get("/search", (req, res) => {
   res.render("index", { restaurantsData: filterRestaurantsData, keywords })
 })
 
+// 瀏覽全部餐廳
+app.get("/", (req, res) => {
+  Restaurant.find({})
+    .lean()
+    .then(restaurantsData => res.render("index", { restaurantsData }))
+    .catch(err => console.log(err))
+})
+
+// 搜尋特定餐廳
+app.get("/search", (req, res) => {
+  if (!req.query.keywords) {
+    res.redirect("/")
+  }
+
+  const keywords = req.query.keywords
+  const keyword = req.query.keywords.trim().toLowerCase()
+
+  Restaurant.find({})
+    .lean()
+    .then(restaurantsData => {
+      const filterRestaurantsData = restaurantsData.filter(
+        data =>
+          data.name.toLowerCase().includes(keyword) ||
+          data.category.includes(keyword)
+      )
+      res.render("index", { restaurantsData: filterRestaurantsData, keywords })
+    })
+    .catch(err => console.log(err))
+})
+
 // 新增餐廳頁面
 app.get("/restaurants/new", (req, res) => {
   res.render("new")
@@ -61,10 +90,10 @@ app.get("/restaurants/new", (req, res) => {
 // 瀏覽特定餐廳
 app.get("/restaurants/:restaurantId", (req, res) => {
   const { restaurantId } = req.params
-  const restaurantData = restaurantsData.find(
-    data => data.id === Number(restaurantId)
-  )
-  res.render("show", { restaurantData })
+  Restaurant.findById(restaurantId)
+    .lean()
+    .then(restaurantData => res.render("show", { restaurantData }))
+    .catch(err => console.log(err))
 })
 
 // 新增餐廳
