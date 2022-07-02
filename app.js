@@ -74,6 +74,15 @@ app.post("/restaurants", (req, res) => {
     .catch(err => console.log(err))
 })
 
+// 編輯餐廳頁面
+app.get("/restaurants/:restaurantId/edit", (req, res) => {
+  const { restaurantId } = req.params
+  Restaurant.findById(restaurantId)
+    .lean()
+    .then(restaurantData => res.render("edit", { restaurantData }))
+    .catch(err => console.log(err))
+})
+
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`)
 })
