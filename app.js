@@ -3,10 +3,9 @@ const mongoose = require("mongoose")
 const exphbs = require("express-handlebars")
 const methodOverride = require("method-override")
 const bodyParser = require('body-parser')
-const restaurantsData = require("./restaurant.json").results
 const Restaurant = require("./models/Restaurant")
 
-mongoose.connect("mongodb://27017/restaurant-list", {
+mongoose.connect("mongodb://localhost/restaurant-list", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
