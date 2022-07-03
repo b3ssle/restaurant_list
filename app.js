@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const restaurantsData = require("./restaurant.json").results
 const Restaurant = require("./models/Restaurant")
 
-mongoose.connect("mongodb://localhost/restaurant-list", {
+mongoose.connect("mongodb://27017/restaurant-list", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

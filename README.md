@@ -43,19 +43,12 @@ The website for the restaurant list. You can browse restaurants list, view detai
 
 ## Development tools
 
-- Node.js 18.4.0
+- Node.js 16.15.1
 - Express 4.17.1
 - Express-Handlebars 5.3.5
 - Bootstrap 4.3.1
 - Font-awesome 5.8.1
-- dotenv 16.0.1
-- mongoose 5.13.14
-
-### Update 
-
-- Node.js from 10.15.0 to v18.4.0 (2022.07.02)
-- Express-Handlebars from 5.3.3 to 5.3.5 (2022.07.02)
-- mongoose 5.13.14 (2022.07.02)
+- mongoose 6.4.2
 
 ## Screenshot
 
